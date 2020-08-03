@@ -17,6 +17,7 @@ import { takeEvery, put } from 'redux-saga/effects';
 function* rootSaga() {
   // YOUR CODE HERE
   yield takeEvery('GET_ZOO_ANIMALS', getAnimals);
+  yield takeEvery('ADD_ANIMAL', addAnimal);
 }
 
 function* getAnimals(action) {
@@ -25,6 +26,17 @@ function* getAnimals(action) {
     yield put({
       type: 'SET_ZOO_ANIMALS',
       payload: response.data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function* addAnimal(action) {
+  try {
+    yield Axios.post('/zoo', action.payload);
+    yield put({
+      type: 'GET_ZOO_ANIMALS',
     });
   } catch (err) {
     console.log(err);
